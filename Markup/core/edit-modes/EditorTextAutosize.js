@@ -250,7 +250,7 @@ function update(ta) {
 
 function isRuntimeSupported() {
     // Don't support Node.js and IE8 (or lower)
-    const _window = Autodesk.Viewing.getGlobal();
+
     if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function')
         return false;
     return true;

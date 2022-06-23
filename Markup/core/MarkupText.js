@@ -160,7 +160,7 @@ import { EditModeText } from './edit-modes/EditModeText'
 
         if (this.highlighted && this.highlighted !== this.prevHighlight) {
             var shape = this.shape;
-            var strokeColor = this.highlighted ? this.highlightColor : composeRGBAString(style['stroke-color'], style['stroke-opacity']);
+            var strokeColor = this.highlightColor;
             setAttributeToMarkupSvg(shape, 'fill', strokeColor);
 
             this.prevHighlight = true;

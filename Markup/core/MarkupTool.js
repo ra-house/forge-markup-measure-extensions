@@ -93,7 +93,7 @@
                     break;
                 case Autodesk.Viewing.KeyCode.F12:
                     return false; // To allow opening developer console.
-                    break;
+
                 default: break;
             }
 

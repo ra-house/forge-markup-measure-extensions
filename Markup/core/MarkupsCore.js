@@ -17,7 +17,7 @@ import { EditFrame } from './EditFrame'
 import { MarkupTool } from './MarkupTool'
 import { EditModeArrow } from './edit-modes/EditModeArrow'
 
-import * as Blah from './edit-modes/BuiltinEditModes' // IMPORTANT!!
+import * as Blah from './edit-modes/BuiltinEditModes' // IMPORTANT!! HAS SIDE EFFECTS
 import CSS from './Markups.css' // IMPORTANT!!
 
 
@@ -606,7 +606,7 @@ import CSS from './Markups.css' // IMPORTANT!!
 
         // Gather a 3d point for markup.
         var idTarget = this.viewer.impl.renderer().readbackTargetId();
-        for(var i = 0; i < markupsCount; ++i) {
+        for(let i = 0; i < markupsCount; ++i) {
 
             var markup = markups[i];
             var point = markup.generatePoint3d(idTarget) || null;
@@ -627,7 +627,7 @@ import CSS from './Markups.css' // IMPORTANT!!
             return result;
         }
 
-        for(var i = 0; i < markupsCount; ++i) {
+        for(let i = 0; i < markupsCount; ++i) {
 
             var collision = result.markups[i];
             if (collision.type === MarkupTypes.MARKUP_TYPE_ARROW && collision.point !== null) {
@@ -643,7 +643,7 @@ import CSS from './Markups.css' // IMPORTANT!!
         var bbX1 = Number.NEGATIVE_INFINITY;
         var bbY1 = Number.NEGATIVE_INFINITY;
 
-        for(var i = 0; i < markupsCount; ++i) {
+        for(let i = 0; i < markupsCount; ++i) {
 
             var boundingBox = markups[i].generateBoundingBox();
 
@@ -863,7 +863,7 @@ import CSS from './Markups.css' // IMPORTANT!!
         this.viewer.setNavigationLock(event.active);
     };
 
-    MarkupsCore.prototype.onUnitsCalibrationStarts = function(event) {
+    MarkupsCore.prototype.onUnitsCalibrationStarts = function() {
         if (this.duringEditMode) {
             this.hide();
         }
@@ -1000,12 +1000,12 @@ import CSS from './Markups.css' // IMPORTANT!!
         if((data.action !== 'undo' && data.targetId !== -1)) {
 
             // Markup can be null when deleting, that's ok, we unselect in that case.
-            var markup = this.getMarkup(data.targetId);
+            let markup = this.getMarkup(data.targetId);
             this.selectMarkup(markup);
         }
         if(data.action === 'undo' && !this.isUndoStackEmpty()) {
 
-          var markup = this.getMarkup(this.actionManager.getLastElementInUndoStack().getTargetId());
+          let markup = this.getMarkup(this.actionManager.getLastElementInUndoStack().getTargetId());
           this.selectMarkup(markup);
         }
 
@@ -1225,6 +1225,7 @@ import CSS from './Markups.css' // IMPORTANT!!
             'stroke-color',
             'stroke-opacity',
             'fill-color',
+            'text-data',
             'fill-opacity'];
         this.defaultStyle = this.defaultStyle || createStyle(defaultStyleAttributes, this);
 
@@ -1314,13 +1315,6 @@ import CSS from './Markups.css' // IMPORTANT!!
      */
     MarkupsCore.prototype.loadMarkups = function (markupString, layerId) {
 
-        function getDataModelVersion(node) {
-            var metadata = node.childNodes[0] ? node.childNodes[0].childNodes[0] : null;
-            var versionAttr = metadata && (typeof metadata.getAttribute === 'function') && metadata.getAttribute('data-model-version');
-
-            return (typeof versionAttr === 'string') ? parseFloat(versionAttr) : null;
-        }
-
         if (this.duringEditMode) {
             console.warn("Markups will not be loaded during the edit mode");
             return false;
@@ -1340,8 +1334,6 @@ import CSS from './Markups.css' // IMPORTANT!!
         if (!parent) {
             return false;
         }
-
-        // var version = getDataModelVersion(parent);
 
         // If the supplied layerId exists in the svg layers map and there are children in the svg then return false.
         if (layerId in this.svgLayersMap && this.svg.childNodes.length > 0) {
@@ -1536,8 +1528,8 @@ import CSS from './Markups.css' // IMPORTANT!!
         var self = this;
 
         //this is specific to the editModeSvgLayerNode, enterEditMode().
-        var unloadSvgLayerNode = function(){
-            if (self.editModeSvgLayerNode){
+        var unloadSvgLayerNode = function() {
+            if (self.editModeSvgLayerNode) {
                 var layerMarkups = self.editModeSvgLayerNode.markups.slice();
                 var numMarkups = layerMarkups.length;
                 for (var i = 0; i < numMarkups; i++) {
@@ -1772,7 +1764,7 @@ import CSS from './Markups.css' // IMPORTANT!!
 
     //// Handled Events ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    proto.onCameraChange = function(event) {
+    proto.onCameraChange = function() {
 
         // Update annotations' parent transform.
         var viewBox = this.getSvgViewBox(this.bounds.width, this.bounds.height);
@@ -1856,21 +1848,27 @@ import CSS from './Markups.css' // IMPORTANT!!
 
     /**
      * Handler to mouse move events, used to create markups.
+     *
+     * @param event
+     * @returns {boolean} - if the event was handed by the editor
      * @private
      */
     proto.onMouseMove = function(event) {
 
         if (this.navigating) {
-            return;
+            return false;
         }
-
+        
+        let eventHandled = false;
         if (this.editFrame.isActive() && event.type === 'mousemove') {
-            this.editFrame.onMouseMove(event);
+            eventHandled = this.editFrame.onMouseMove(event);
         }
 
         this.callSnapperMouseMove();
 
-        this.editMode && this.editMode.onMouseMove(event);
+        eventHandled = this.editMode && this.editMode.onMouseMove(event) || eventHandled;
+
+        return eventHandled;
     };
 
     /**
@@ -1898,19 +1896,25 @@ import CSS from './Markups.css' // IMPORTANT!!
         this.ignoreNextMouseUp = false;
     };
 
+    /**
+     * 
+     * @param {*} event 
+     * @returns {boolean} - true / false means the editor did / didn't handle the event
+     * @private
+     */
     proto.onMouseUp = function(event) {
 
         if (this.navigating) {
-            return;
+            return false;
         }
 
         if (this.editFrame.isActive()) {
             this.editFrame.onMouseUp(event);
-            return;
+            return true;
         }
 
         if(!this.ignoreNextMouseUp) {
-            this.editMode.onMouseUp(event);
+            return this.editMode.onMouseUp(event);
         }
     };
 
@@ -1948,11 +1952,11 @@ import CSS from './Markups.css' // IMPORTANT!!
         this.dispatchEvent(event);
     };
 
-    proto.onMarkupEnterEdition = function(event) {
+    proto.onMarkupEnterEdition = function() {
 
     };
 
-    proto.onMarkupCancelEdition = function(event) {
+    proto.onMarkupCancelEdition = function() {
 
         this.onUserCancel();
     };

@@ -44,11 +44,8 @@ import { simplify } from '../MarkupsCoreUtils'
      */
     proto.onMouseMove = function(event) {
 
-        EditMode.prototype.onMouseMove.call( this, event );
-
-        var selectedMarkup = this.selectedMarkup;
-        if (!selectedMarkup || !this.creating) {
-            return;
+        if (!EditMode.prototype.onMouseMove.call( this, event )) {
+            return false;
         }
 
         var editor = this.editor;
@@ -78,6 +75,7 @@ import { simplify } from '../MarkupsCoreUtils'
 
         var setPen = this.setPen(this.position, this.size, this.absolutePath, true);
         setPen.execute();
+        return true;
     };
 
     /**

@@ -55,18 +55,18 @@ MeasureExtension.prototype.constructor = MeasureExtension;
 MeasureExtension.prototype.load = async function() {
 
     await this.viewer.loadExtension('Autodesk.Snapping');
-
+console.log("MeasureExtension load");
     var self   = this;
     var viewer = this.viewer;
     this.hasUI = Autodesk.Viewing.GuiViewer3D && viewer instanceof Autodesk.Viewing.GuiViewer3D;
 
     this.escapeHotkeyId = 'Autodesk.Measure.Hotkeys.Escape';
-
+console.log("MeasureExtension 001");
     // Register the Measure tool
     if (!viewer.toolController){
         return false;
     }
-
+console.log("MeasureExtension 002");
     this.options = this.options || {};
     var measureToolOptions = {};
 
@@ -81,7 +81,7 @@ MeasureExtension.prototype.load = async function() {
         precision: null,
         calibrationFactor: null
     };
-
+console.log("MeasureExtension 003");
 	measureToolOptions.snapperOptions = this.options.snapperOptions;
 
     this.forceCalibrate = this.options.forceCalibrate;
@@ -90,7 +90,7 @@ MeasureExtension.prototype.load = async function() {
         renderSnappedTopology: true
     });
     viewer.toolController.registerTool(this.snapper);
-
+console.log("MeasureExtension 004");
     this.measureTool = new MeasureTool(viewer, measureToolOptions, this.sharedMeasureConfig, this.snapper);
     viewer.toolController.registerTool(this.measureTool);
 
@@ -99,7 +99,7 @@ MeasureExtension.prototype.load = async function() {
 
     this.magnifyingGlass = new MagnifyingGlass(viewer);
     viewer.toolController.registerTool(this.magnifyingGlass);
-
+console.log("MeasureExtension 005");
     this.calibration = {};
     this.onFinishedCalibration = function(event) {
         if (self.measureToolbar) {
@@ -116,20 +116,20 @@ MeasureExtension.prototype.load = async function() {
     };
 
     viewer.addEventListener('finished-calibration', this.onFinishedCalibration);
-
+console.log("MeasureExtension 006");
     this.onMeasurementChanged = function(event) {
         var type = event.data.type;
         self.changeMeasurementType(type);
     };
 
     viewer.addEventListener(MeasureCommon.Events.MEASUREMENT_CHANGED_EVENT, this.onMeasurementChanged);
-
+console.log("MeasureExtension 007");
     if (viewer.model) {
         this._onModelLoaded({ model: viewer.model });
     } else {
         viewer.addEventListener(av.MODEL_ROOT_LOADED_EVENT, this._onModelLoaded, { once: true });
     }
-
+console.log("MeasureExtension 008");
     // If there is no model anymore, interrupt any ongoing interaction.
     // We need at least one model to derive things like is2d() and model units.
     this.onModelRemoved = function() {
@@ -158,6 +158,9 @@ MeasureExtension.prototype.load = async function() {
     };
     viewer.addEventListener(av.MODEL_ADDED_EVENT, this.onModelAdded);
     viewer.addEventListener(av.MODEL_REMOVED_EVENT, this.onModelRemoved);
+console.log("MeasureExtension 100");
+    //Load the required dependency (and return the pending load as the load completion Promise)
+    return this.viewer.loadExtension('Autodesk.CompGeom');
 };
 
 MeasureExtension.prototype._onModelLoaded = function(event) {

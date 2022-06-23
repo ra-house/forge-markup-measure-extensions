@@ -15,7 +15,7 @@ export var createStyle = function(attributes, editor) {
 
     var defaults = getStyleDefaultValues(style, editor);
 
-    for(var i = 0; i < attributes.length; ++i) {
+    for(let i = 0; i < attributes.length; ++i) {
 
         var attribute = attributes[i];
         style[attribute] = defaults[attribute].values[defaults[attribute].default].value;
@@ -182,6 +182,18 @@ export var getStyleDefaultValues = function(style, editor) {
             default: 0};
     }
 
+    function getSvgString() {
+        return {
+            values: [
+            {
+                name: 'DefaultValue',
+                value: '<svg height="100" width="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>' }],
+        
+        
+            default: 0 };
+        
+    }
+    
     var values = cloneStyle(style);
     var normaStrokeWidth = editor.getStrokeWidth();
     var normaFontWidth = editor.getFontWidth();
@@ -218,14 +230,20 @@ export var getStyleDefaultValues = function(style, editor) {
                 values[attribute] = getColors();
                 break;
 
-            case 'stroke-opacity':
-                var defaultTransparent = false;
-                values[attribute] = getOpacities(defaultTransparent);
-                break;
+            case 'stroke-opacity':{
+                    let defaultTransparent = false;
+                    values[attribute] = getOpacities(defaultTransparent);
+                    break;
+                }
 
-            case 'fill-opacity':
-                var defaultTransparent = true;
-                values[attribute] = getOpacities(defaultTransparent);
+            case 'fill-opacity':{
+                    let defaultTransparent = true;
+                    values[attribute] = getOpacities(defaultTransparent);
+                    break;
+                }
+                
+            case 'text-data':                        
+                values[attribute] = getSvgString();
                 break;
 
             default:

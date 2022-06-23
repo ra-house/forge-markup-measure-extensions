@@ -16,6 +16,7 @@ import { CreatePolycloud } from './core/edit-actions/CreatePolycloud'
 import { CreatePolyline } from './core/edit-actions/CreatePolyline'
 import { CreateRectangle } from './core/edit-actions/CreateRectangle'
 import { CreateText } from './core/edit-actions/CreateText'
+import { CreateStamp } from './core/edit-actions/CreateStamp'
 import { DeleteArrow } from './core/edit-actions/DeleteArrow'
 import { DeleteCallout } from './core/edit-actions/DeleteCallout'
 import { DeleteCircle } from './core/edit-actions/DeleteCircle'
@@ -27,6 +28,7 @@ import { DeletePolycloud } from './core/edit-actions/DeletePolycloud'
 import { DeletePolyline } from './core/edit-actions/DeletePolyline'
 import { DeleteRectangle } from './core/edit-actions/DeleteRectangle'
 import { DeleteText } from './core/edit-actions/DeleteText'
+import { DeleteStamp } from './core/edit-actions/DeleteStamp'
 
 import { EditAction } from './core/edit-actions/EditAction' 
 import { EditActionGroup } from './core/edit-actions/EditActionGroup' 
@@ -46,6 +48,7 @@ import { EditModePolycloud } from './core/edit-modes/EditModePolycloud'
 import { EditModePolyline } from './core/edit-modes/EditModePolyline'
 import { EditModeRectangle } from './core/edit-modes/EditModeRectangle'
 import { EditModeText } from './core/edit-modes/EditModeText'
+import { EditModeStamp } from './core/edit-modes/EditModeStamp'
 import { EditorTextInput } from './core/edit-modes/EditorTextInput'
 
 
@@ -62,6 +65,7 @@ import { MarkupPolycloud } from './core/MarkupPolycloud'
 import { MarkupPolyline } from './core/MarkupPolyLine'
 import { MarkupRectangle } from './core/MarkupRectangle'
 import { MarkupText } from './core/MarkupText'
+import { MarkupStamp } from './core/MarkupStamp'
 import { MarkupTool } from './core/MarkupTool'
 
 import { SetArrow } from './core/edit-actions/SetArrow'
@@ -79,6 +83,7 @@ import { SetRotation } from './core/edit-actions/SetRotation'
 import { SetSize } from './core/edit-actions/SetSize'
 import { SetStyle } from './core/edit-actions/SetStyle'
 import { SetText } from './core/edit-actions/SetText'
+import { SetStamp } from './core/edit-actions/SetStamp'
 
 
 import * as MarkupEvents from './core/MarkupEvents'
@@ -104,6 +109,7 @@ export const Core = {
     CreatePolyline,
     CreateRectangle,
     CreateText,
+    CreateStamp,
     DeleteArrow,
     DeleteCallout,
     DeleteCircle,
@@ -115,6 +121,7 @@ export const Core = {
     DeletePolyline,
     DeleteRectangle,
     DeleteText,
+    DeleteStamp,
 
     EditAction,
     EditActionGroup,
@@ -134,6 +141,7 @@ export const Core = {
     EditModePolyline,
     EditModeRectangle,
     EditModeText,
+    EditModeStamp,
     EditorTextInput,
 
     Markup,
@@ -149,6 +157,7 @@ export const Core = {
     MarkupPolyline,
     MarkupRectangle,
     MarkupText,
+    MarkupStamp,
     MarkupTool,
     
     MarkupsCore,
@@ -168,6 +177,7 @@ export const Core = {
     SetSize,
     SetStyle,
     SetText,
+    SetStamp,
 
 
     MarkupEvents,

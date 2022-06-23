@@ -50,12 +50,11 @@ import * as MarkupTypes from '../MarkupTypes'
      */
     proto.onMouseMove = function(event) {
 
-        EditMode.prototype.onMouseMove.call( this, event );
+        if (!EditMode.prototype.onMouseMove.call( this, event )) {
+            return false;
+        }
 
         var selectedMarkup = this.selectedMarkup;
-        if(!selectedMarkup || !this.creating) {
-            return;
-        }
 
         var editor = this.editor;
 
@@ -75,6 +74,7 @@ import * as MarkupTypes from '../MarkupTypes'
             size);
 
         setCircle.execute();
+        return true;
     };
 
     /**

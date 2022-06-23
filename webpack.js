@@ -16,7 +16,7 @@ process.title = 'lmv-webpack';
  */
 module.exports = function(env) {
 
-    const PROD_BUILD = env.BUILD_PROD;
+    const PROD_BUILD = process.env.BUILD_PROD;
 
     // Defaults for local developer builds
     var build_version = env.BUILD_VERSION;
@@ -140,15 +140,15 @@ module.exports = function(env) {
     };
 
     var exportTasks = [];
-    if (env.BUILD_TASK === 'lmv-all') {
+    if (process.env.BUILD_TASK === 'lmv-all') {
         for (var taskId in nameToTask) {
             if (nameToTask.hasOwnProperty(taskId))
             exportTasks.push(nameToTask[taskId]);
         }
     } else {
-        var task = nameToTask[env.BUILD_TASK];
+        var task = nameToTask[process.env.BUILD_TASK];
         if (!task)
-            throw new Error(`Invalid env.BUILD_TASK value: (${env.BUILD_TASK})`);
+            throw new Error(`Invalid env.BUILD_TASK value: (${process.env.BUILD_TASK})`);
             exportTasks = [task];
     }
     exportTasks.forEach((task)=>{

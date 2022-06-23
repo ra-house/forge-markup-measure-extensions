@@ -70,14 +70,13 @@ import { areMarkupsPointsInClientRange } from '../MarkupsCoreUtils'
      */
     proto.onMouseMove = function(event) {
 
-        EditMode.prototype.onMouseMove.call(this, event);
+        if (!EditMode.prototype.onMouseMove.call(this, event)) {
+            return false;
+        }
 
-        var editor = this.editor;
         var selectedMarkup = this.selectedMarkup;
 
-        if(!selectedMarkup || !this.creating) {
-            return;
-        }
+        var editor = this.editor;
 
         this.dragging = true;
 
@@ -104,6 +103,7 @@ import { areMarkupsPointsInClientRange } from '../MarkupsCoreUtils'
             locations);
 
         setPolyline.execute();
+        return true;
     };
 
     /**

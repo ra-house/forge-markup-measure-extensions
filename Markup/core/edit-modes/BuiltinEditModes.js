@@ -13,6 +13,7 @@ import { EditModePolyline } from './EditModePolyline'
 import { EditModePolycloud } from './EditModePolycloud'
 import { EditModeCallout } from './EditModeCallout'
 import { EditModeDimension } from './EditModeDimension'
+import { EditModeStamp } from './EditModeStamp'
 
 
 theEditModeManager.register(MarkupTypes.MARKUP_TYPE_ARROW, EditModeArrow);
@@ -26,4 +27,5 @@ theEditModeManager.register(MarkupTypes.MARKUP_TYPE_POLYLINE, EditModePolyline);
 theEditModeManager.register(MarkupTypes.MARKUP_TYPE_POLYCLOUD, EditModePolycloud);
 theEditModeManager.register(MarkupTypes.MARKUP_TYPE_CALLOUT, EditModeCallout);
 theEditModeManager.register(MarkupTypes.MARKUP_TYPE_DIMENSION, EditModeDimension);
+theEditModeManager.register(MarkupTypes.MARKUP_TYPE_STAMP, EditModeStamp);
 
