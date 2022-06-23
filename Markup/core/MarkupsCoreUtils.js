@@ -24,7 +24,7 @@ import { CreateStamp } from './edit-actions/CreateStamp'
     // Change these constants to alter the default sizes in pixels of strokes and fonts.
     export var MARKUP_DEFAULT_STROKE_WIDTH_IN_PIXELS = 1;
     export var MARKUP_DEFAULT_FONT_WIDTH_IN_PIXELS = 10;
-    export var MARKUP_DEFAULT_HITAREAS_MARGIN_IN_PIXELS = 15;
+    export var MARKUP_DEFAULT_HITAREAS_MARGIN_IN_PIXELS = 1;
     export var EDIT_FRAME_DEFAULT_MARGIN = 7;
 
     /**
